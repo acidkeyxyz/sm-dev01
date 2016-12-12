@@ -68,28 +68,28 @@
 	</nav>
 
     <div class="container-fluid theme-showcase" role="main">
-		<div class="jumbotron">
-			<h1>Diego (no) te amo</h1>
-        	
-        	<p id="names">Este es un ejemplo de que hasta en los fines de semana pienso en ti,(para mal, pero pienso). </p>
-			<input id="listOfall" type="text" value='Noe,Quique,Villa,Ruben,Kari,Carlo'></input>
-			
-			<button id="generate"  type="button" value="generate" class="btn btn-default">generate</button>
-     	</div>
-     	
-      	<div class="page-header">
-        	<h1>Panels</h1>
-      	</div>
-      	
-      	<div class="row">
+		<div class="row">
         	<div class="col-sm-4 col-md-12 col-lg-12">
+          		<div class="panel panel-primary">
+            		<div class="panel-heading">
+              			<h3 class="panel-title">Random Generator</h3>
+            		</div>
+	            	<div class="panel-body">
+						<h3>List:</h3>
+						<input id="listOfall" class="col-md-12" type="text" value='Noe,Villa,Ruben,Kari'></input>
+						<h3>Result</h3>
+						<button id="generate"  type="button" value="generate" class="btn btn-default">generate</button>
+						<h4  id="names" ></h4>
+					</div>
+          		</div>
+        	</div>
+			<div class="col-sm-4 col-md-12 col-lg-12">
           		<div class="panel panel-primary">
             		<div class="panel-heading">
               			<h3 class="panel-title">Twitter</h3>
             		</div>
 	            	<div class="panel-body">
-	              		<a class="twitter-timeline" href="https://twitter.com/acidkeyxy">Tweets by acidkeyxy</a> 
-				  		<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+	              		
 	            	</div>
           		</div>
         	</div>
@@ -104,6 +104,8 @@
     <script src="./js/docs.min.js"></script>
 
 	<script>
+		var app = {};
+		app.counter = 0;
 		$(document).ready(function(){
 		    $("#generate").click(function(){
 				var array = $("#listOfall").val().split(",");
@@ -111,7 +113,7 @@
 				while(array.length !=0){
 					var index = array.length;
 					if(array.length == 1){
-						textFinal += array[0]+",";
+						textFinal += array[0]+".";
 						break;
 					}else{
 						var n = (100 * Math.random()) % index ;
@@ -123,7 +125,9 @@
 						array.splice(n,1);
 					}
 				}
-				$("#names").text(textFinal);
+				$("#names").html($("#names").html()+(++app.counter)+".-"+textFinal+"<br/>");
+				
+				
 			});
 		});
 	</script>
