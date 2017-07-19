@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-   
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-  		
+
   	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
@@ -40,29 +40,14 @@
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
 	          	</button>
-	          	
-          		<a class="navbar-brand" href="http://getbootstrap.com/examples/theme/#">acidkeyxy</a>
+
+          		<a class="navbar-brand" href="http://getbootstrap.com/examples/theme/#">acidkey</a>
 			</div>
-       		 
+
         	<div id="navbar" class="navbar-collapse collapse">
           		<ul class="nav navbar-nav">
 		            <li class="active"><a href="http://getbootstrap.com/examples/theme/#">Home</a></li>
-		            <li><a href="http://getbootstrap.com/examples/theme/#about">Parking space</a></li>
-		            <li><a href="http://getbootstrap.com/examples/theme/#contact">Contact</a></li>
-            		<li class="dropdown">
-              			<a href="http://getbootstrap.com/examples/theme/#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-              			
-              			<ul class="dropdown-menu">
-			                <li><a href="#">Action</a></li>
-			                <li><a href="#">Another action</a></li>
-			                <li><a href="#">Something else here</a></li>
-			                <li role="separator" class="divider"></li>
-			                <li class="dropdown-header">Nav header</li>
-			                <li><a href="#">Separated link</a></li>
-			                <li><a href="#">One more separated link</a></li>
-						</ul>
-            		</li>
-				</ul>
+							</ul>
 			</div>
 		</div>
 	</nav>
@@ -72,11 +57,11 @@
         	<div class="col-sm-4 col-md-12 col-lg-12">
           		<div class="panel panel-primary">
             		<div class="panel-heading">
-              			<h3 class="panel-title">Random Generator</h3>
+              			<h3 class="panel-title">Challenges Generator</h3>
             		</div>
 	            	<div class="panel-body">
 						<h3>List:</h3>
-						<input id="listOfall" class="col-md-12 col-xs-12" type="text" value='Noe,Villa,Ruben,Kari'></input>
+						<input id="listOfall" class="col-md-12 col-xs-12" type="text" value='checo,armando,rodriguera,alex,alexei,jorge,chava'></input>
 						<h3>Result</h3>
 						<button id="generate"  type="button" value="generate" class="btn btn-default">generate</button>
 						<h4  id="names" ></h4>
@@ -95,8 +80,8 @@
         	</div>
 		</div>
 	</div>
-	
-	
+
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <script src="./js/jquery.min.js"></script>
@@ -112,27 +97,31 @@
 				var textFinal = "";
 				while(array.length !=0){
 					var index = array.length;
-					if(array.length == 1){
-						textFinal += array[0]+".";
+					if(array.length == 2){
+						textFinal += array[0]+" vs "+ array[1];
 						break;
-					}else{
-						var n = (100 * Math.random()) % index ;
-						n = n.toFixed(0);
-						if(array[n] !=undefined){
-							textFinal += array[n]+",";
-						}
-						
-						array.splice(n,1);
 					}
+					if(array.length == 1){
+						textFinal += array[0]+" vs winner";
+						break;
+					}
+					else{
+						var player1 = ((100 * Math.random()) % (array.length-1)).toFixed(0);
+						textFinal += array[player1]+" vs " ;
+						array.splice(player1,1);
+						var player2 = ((100 * Math.random()) % (array.length-1)).toFixed(0);
+						textFinal += array[player2]+"<br/>";
+						array.splice(player2,1);
+						}
 				}
-				$("#names").html($("#names").html()+(++app.counter)+".-"+textFinal+"<br/>");
-				
-				
+				$("#names").html($("#names").html()+textFinal+"<br/><br/><br/>");
+
+
 			});
 		});
 	</script>
-	
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="./js/ie10-viewport-bug-workaround.js"></script>
-    
+
 	<div id="global-zeroclipboard-html-bridge" class="global-zeroclipboard-container" style="position: absolute; left: 0px; top: -9999px; width: 15px; height: 15px; z-index: 999999999;" title="" data-original-title="Copy to clipboard">      <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" id="global-zeroclipboard-flash-bridge" width="100%" height="100%">         <param name="movie" value="/assets/flash/ZeroClipboard.swf?noCache=1479704740906">         <param name="allowScriptAccess" value="sameDomain">         <param name="scale" value="exactfit">         <param name="loop" value="false">         <param name="menu" value="false">         <param name="quality" value="best">         <param name="bgcolor" value="#ffffff">         <param name="wmode" value="transparent">         <param name="flashvars" value="trustedOrigins=getbootstrap.com%2C%2F%2Fgetbootstrap.com%2Chttp%3A%2F%2Fgetbootstrap.com">         <embed src="/assets/flash/ZeroClipboard.swf?noCache=1479704740906" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="100%" height="100%" name="global-zeroclipboard-flash-bridge" allowscriptaccess="sameDomain" allowfullscreen="false" type="application/x-shockwave-flash" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="trustedOrigins=getbootstrap.com%2C%2F%2Fgetbootstrap.com%2Chttp%3A%2F%2Fgetbootstrap.com" scale="exactfit">                </object></div><svg xmlns="http://www.w3.org/2000/svg" width="1140" height="500" viewBox="0 0 1140 500" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="57" style="font-weight:bold;font-size:57pt;font-family:Arial, Helvetica, Open Sans, sans-serif">Thirdslide</text></svg></body></html>
