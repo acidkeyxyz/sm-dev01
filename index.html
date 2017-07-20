@@ -60,21 +60,22 @@
               			<h3 class="panel-title">Challenges Generator</h3>
             		</div>
 	            	<div class="panel-body">
-						<h3>List:</h3>
-						<input id="listOfall" class="col-md-12 col-xs-12" type="text" value='checo,armando,rodriguera,alex,alexei,jorge,chava'></input>
-						<h3>Result</h3>
-						<button id="generate"  type="button" value="generate" class="btn btn-default">generate</button>
-						<h4  id="names" ></h4>
+									<input id="listOfall" class="col-md-12 col-xs-10" type="text" value='checo,armando,rodriguera,alex,alexei,jorge,chava'></input>
+									<button id="generate"  type="button" value="generate" class="btn btn-default">generate</button>
 					</div>
           		</div>
         	</div>
-			<div class="col-sm-4 col-md-12 col-lg-12">
+			<div class="col-md-12 col-lg-12">
           		<div class="panel panel-primary">
             		<div class="panel-heading">
               			<h3 class="panel-title">FZ</h3>
             		</div>
 	            	<div class="panel-body">
-	              		<img src="./img/fz_09_negro3_2016.jpg"></img>
+										<div id="challenges" class="row">
+												<div class="level1 col-md-4 col-xs-4"></div>
+												<div class="level2 col-md-4 col-xs-4"></div>
+												<div class="level3 col-md-4 col-xs-4"></div>
+										</div>
 	            	</div>
           		</div>
         	</div>
@@ -90,35 +91,60 @@
 
 	<script>
 		var app = {};
+		app.$spanVs  =  $("<span>").addClass("vs").text(" vs ");
+		app.$br  = $("<br/>");
+		app.$btn = $("<button>").attr("type","button").addClass("btn btn-primary col-md-12 col-xs-12");
 		app.counter = 0;
 		$(document).ready(function(){
+			app.addEvents();
 		    $("#generate").click(function(){
 				var array = $("#listOfall").val().split(",");
 				var textFinal = "";
 				while(array.length !=0){
 					var index = array.length;
 					if(array.length == 2){
-						textFinal += array[0]+" vs "+ array[1];
+						$(".level1").append(app.$btn.clone().addClass("player1").text(array[0]));
+						$(".level1").append(app.$btn.clone().addClass("player2").text(array[1]));
 						break;
 					}
 					if(array.length == 1){
-						textFinal += array[0]+" vs winner";
+						$(".level1").append(app.$btn.clone().addClass("player1").text(array[0]));
 						break;
 					}
 					else{
 						var player1 = ((100 * Math.random()) % (array.length-1)).toFixed(0);
-						textFinal += array[player1]+" vs " ;
+						$(".level1").append(app.$btn.clone().addClass("player1").text(array[player1]));
 						array.splice(player1,1);
 						var player2 = ((100 * Math.random()) % (array.length-1)).toFixed(0);
-						textFinal += array[player2]+"<br/>";
+						$(".level1").append(app.$btn.clone().addClass("player2").text(array[player2]));
 						array.splice(player2,1);
 						}
 				}
-				$("#names").html($("#names").html()+textFinal+"<br/><br/><br/>");
-
-
 			});
 		});
+		app.addEvents = function(){
+			$("#challenges").delegate("button","click",function(){
+					$(this).removeClass("btn-primary").addClass("btn-success");
+					if($(this).hasClass("player1")){
+						$(this).next().removeClass("btn-primary").addClass("btn-danger");
+					}else {
+						$(this).prev().removeClass("btn-primary").addClass("btn-danger");
+					}
+
+					var $newBtn = $(this).clone();
+					$newBtn.removeClass("btn-success").addClass("btn-primary");
+							if( $(this).parent().hasClass("level1") ){
+									var nextClass= $(".level2 button").length % 2 == 0 ? "player1" : "player2";
+									$(".level2").append($newBtn.removeClass("player1").removeClass("player2").addClass(nextClass));
+							}else if( $(this).parent().hasClass("level2") ){
+									var nextClass= $(".level3 button").length % 2 == 0 ? "player1" : "player2";
+									$(".level3").append($newBtn.removeClass("player1").removeClass("player2").addClass(nextClass));
+							}else{
+								alert( $(this).text()+" WINS");
+							}
+
+			});
+		};
 	</script>
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
