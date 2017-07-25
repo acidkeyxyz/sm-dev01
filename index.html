@@ -54,21 +54,33 @@
 
     <div class="container-fluid theme-showcase" role="main">
 		<div class="row">
-        	<div class="col-sm-4 col-md-12 col-lg-12">
+        	<div class="col-md-12 col-lg-12">
           		<div class="panel panel-primary">
             		<div class="panel-heading">
               			<h3 class="panel-title">Challenges Generator</h3>
             		</div>
 	            	<div class="panel-body">
-									<input id="listOfall" class="col-md-12 col-xs-10" type="text" value='checo,armando,rodriguera,alex,alexei,jorge,chava'></input>
-									<button id="generate"  type="button" value="generate" class="btn btn-default">generate</button>
-					</div>
+									<textarea id="listOfall" class="col-md-12 col-xs-10" type="text">checo,rodriguera,alexei,jorge,chava</textarea>
+									<!-- <textarea id="listOfall" class="col-md-12 col-xs-10" type="text">a,b,c,d</textarea> -->
+									<button id="generate" type="button" value="generate" class="btn btn-primary">generate</button>
+									<button id="randomize" type="button" value="randomize" class="btn btn-success">randomize</button>
+								</div>
+          		</div>
+        	</div>
+					<div class="col-md-12 col-lg-12">
+          		<div class="panel panel-primary">
+            		<div class="panel-heading">
+              			<h3 class="panel-title">Score</h3>
+            		</div>
+	            	<div id="scoreWrapper" class="panel-body">
+
+								</div>
           		</div>
         	</div>
 			<div class="col-md-12 col-lg-12">
           		<div class="panel panel-primary">
             		<div class="panel-heading">
-              			<h3 class="panel-title">FZ</h3>
+              			<h3 class="panel-title">Challenges</h3>
             		</div>
 	            	<div class="panel-body">
 										<div id="challenges" class="row">
@@ -91,54 +103,80 @@
 
 	<script>
 		var app = {};
+		app.scoreMatrix = [];
 		app.$spanVs  =  $("<span>").addClass("vs").text(" vs ");
 		app.$br  = $("<br/>");
 		app.$btn = $("<button>").attr("type","button").addClass("btn btn-primary col-md-12 col-xs-12");
 		app.counter = 0;
+		app.challenges = [];
 		$(document).ready(function(){
-			app.addEvents();
+				app.addEvents();
+		    $("#randomize").click(function(){
+						app.printAll();
+				});
 		    $("#generate").click(function(){
-				var array = $("#listOfall").val().split(",");
-				var textFinal = "";
-				while(array.length !=0){
-					var index = array.length;
-					if(array.length == 2){
-						$(".level1").append(app.$btn.clone().addClass("player1").text(array[0]));
-						$(".level1").append(app.$btn.clone().addClass("player2").text(array[1]));
-						break;
+					var array = $("#listOfall").html().split(",");
+					for(var i=0;i<array.length;i++){
+						$("#scoreWrapper").append(app.buttonScore(array[i],0));
 					}
-					if(array.length == 1){
-						$(".level1").append(app.$btn.clone().addClass("player1").text(array[0]));
-						break;
+					for(var i=0;i<array.length;i++){
+							for(var j=i+1;j<array.length;j++){
+										app.challenges.push(app.button(array[i],"player1")  + app.button(array[j],"player2"));
+							}
 					}
-					else{
-						var player1 = ((100 * Math.random()) % (array.length-1)).toFixed(0);
-						$(".level1").append(app.$btn.clone().addClass("player1").text(array[player1]));
-						array.splice(player1,1);
-						var player2 = ((100 * Math.random()) % (array.length-1)).toFixed(0);
-						$(".level1").append(app.$btn.clone().addClass("player2").text(array[player2]));
-						array.splice(player2,1);
-						}
-				}
+					app.printAll();
 			});
 		});
+		app.button = function(text,selectedClass){
+			var text = app.$btn.clone().addClass(selectedClass).text(text).prop("outerHTML");
+			return text;
+		};
+		app.buttonScore = function(text,score){
+			var text = app.$btn.clone().addClass(text).val(score).text(text+" ["+score+"]").prop("outerHTML");
+			return text;
+		};
+		app.printAll = function(){
+			var textFinal = "";
+			var temp = app.challenges.slice(0);
+			while(temp.length !=0){
+					var index = temp.length;
+					if(temp.length == 1){
+						textFinal += temp[0];
+						break;
+					}else{
+						var n = ((100 * Math.random()) % (temp.length-1) ).toFixed(0);
+						textFinal += temp[n]+"<br/>";
+
+						temp.splice(n,1);
+					}
+				}
+				$(".level1").html(textFinal);
+				app.addCounters();
+		};
+		app.addCounters = function (){
+			 $(".level1 button").click(function(){
+				 	var winner = $(this).text();
+					var currentScore = parseInt($("#scoreWrapper button."+winner).val()) + 1;
+					$("#scoreWrapper button."+winner).val(currentScore).text(winner+" ["+currentScore+"]");
+			 });
+		};
 		app.addEvents = function(){
 			$("#challenges").delegate("button","click",function(){
-					$(this).removeClass("btn-primary").addClass("btn-success");
+					$(this).removeClass("btn-primary").addClass("btn-success").attr("disabled","disabled");;
 					if($(this).hasClass("player1")){
-						$(this).next().removeClass("btn-primary").addClass("btn-danger");
+						$(this).next().removeClass("btn-primary").addClass("btn-danger").attr("disabled","disabled");;
 					}else {
-						$(this).prev().removeClass("btn-primary").addClass("btn-danger");
+						$(this).prev().removeClass("btn-primary").addClass("btn-danger").attr("disabled","disabled");;
 					}
 
 					var $newBtn = $(this).clone();
 					$newBtn.removeClass("btn-success").addClass("btn-primary");
 							if( $(this).parent().hasClass("level1") ){
 									var nextClass= $(".level2 button").length % 2 == 0 ? "player1" : "player2";
-									$(".level2").append($newBtn.removeClass("player1").removeClass("player2").addClass(nextClass));
+									//$(".level2").append($newBtn.removeClass("player1").removeClass("player2").addClass(nextClass));
 							}else if( $(this).parent().hasClass("level2") ){
 									var nextClass= $(".level3 button").length % 2 == 0 ? "player1" : "player2";
-									$(".level3").append($newBtn.removeClass("player1").removeClass("player2").addClass(nextClass));
+									//$(".level3").append($newBtn.removeClass("player1").removeClass("player2").addClass(nextClass));
 							}else{
 								alert( $(this).text()+" WINS");
 							}
