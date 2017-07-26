@@ -115,7 +115,7 @@
 						app.printAll();
 				});
 		    $("#generate").click(function(){
-					var array = $("#listOfall").html().split(",");
+					var array = $("#listOfall").val().split(",");
 					for(var i=0;i<array.length;i++){
 						$("#scoreWrapper").append(app.buttonScore(array[i],0));
 					}
